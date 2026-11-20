@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>たちこくナビneo</title>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eceaff;--fg:#17133a;--mut:#615c8f;--card:rgba(255,255,255,.72);--bd:rgba(90,70,220,.18);--a:#5b3df5;--b:#ff4f9a;--c:#00b8c4;--ok:#0f9d63;--ng:#e23d4b;--orb:.55;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d0b24;--fg:#efedff;--mut:#9b96c9;--card:rgba(255,255,255,.07);--bd:rgba(255,255,255,.14);--ok:#3ddc97;--ng:#ff6b78;--orb:.35}}
+:root[data-theme="dark"]{--bg:#0d0b24;--fg:#efedff;--mut:#9b96c9;--card:rgba(255,255,255,.07);--bd:rgba(255,255,255,.14);--ok:#3ddc97;--ng:#ff6b78;--orb:.35}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--fg);font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Yu Gothic",sans-serif;font-weight:500;overflow-x:hidden}
+.orbs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orbs i{position:absolute;border-radius:50%;filter:blur(70px);opacity:var(--orb);animation:fl 14s ease-in-out infinite alternate}
+.orbs i:nth-child(1){width:46vmax;height:46vmax;background:var(--a);left:-14vmax;top:-12vmax}
+.orbs i:nth-child(2){width:38vmax;height:38vmax;background:var(--b);right:-12vmax;top:18vh;animation-delay:-5s}
+.orbs i:nth-child(3){width:34vmax;height:34vmax;background:var(--c);left:20vw;bottom:-18vmax;animation-delay:-9s}
+@keyframes fl{to{transform:translate(4vmax,3vmax) scale(1.12)}}
+main{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:20px 18px 60px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.mark{font-weight:900;font-size:15px;letter-spacing:.04em}
+.mark b{background:linear-gradient(90deg,var(--a),var(--b));color:#fff;padding:2px 9px;border-radius:99px;margin-left:6px;font-size:12px}
+.ib{border:1px solid var(--bd);background:var(--card);color:var(--fg);border-radius:99px;padding:8px 14px;font:inherit;font-weight:700;cursor:pointer;backdrop-filter:blur(10px)}
+.ib:focus-visible,.btn:focus-visible,input:focus-visible,.cat:focus-visible{outline:3px solid var(--c);outline-offset:2px}
+h1{font-family:"Dela Gothic One","Zen Maru Gothic",sans-serif;font-weight:400;font-size:clamp(46px,13vw,124px);line-height:1;margin:42px 0 6px;letter-spacing:-.02em}
+h1 span{display:block;background:linear-gradient(100deg,var(--a) 10%,var(--b) 55%,var(--c));-webkit-background-clip:text;background-clip:text;color:transparent;animation:hue 8s linear infinite alternate}
+h1 em{font-style:normal;display:inline-block;font-size:.42em;transform:rotate(-6deg);border:3px solid currentColor;border-radius:14px;padding:0 .3em;margin-left:.2em;-webkit-text-fill-color:var(--fg);color:var(--fg)}
+@keyframes hue{to{filter:hue-rotate(40deg)}}
+.lead{color:var(--mut);max-width:34em;line-height:1.8;margin:14px 0 30px;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.cat{--k:var(--a);text-align:left;border:1px solid var(--bd);background:var(--card);backdrop-filter:blur(14px);color:var(--fg);font:inherit;border-radius:26px;padding:20px;cursor:pointer;position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s}
+.cat::before{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:var(--k);opacity:.22}
+.cat:hover{transform:translateY(-4px) rotate(-.6deg);box-shadow:0 14px 34px -14px var(--k)}
+.cat .ic{font-size:34px}.cat h3{margin:8px 0 4px;font-size:19px}.cat p{margin:0;color:var(--mut);font-size:13px;line-height:1.6}
+.cat .meta{display:flex;justify-content:space-between;margin-top:16px;font-size:12px;font-weight:700;color:var(--k)}
+.cat.wide{grid-column:1/-1;background:linear-gradient(120deg,var(--a),var(--b));color:#fff;border:0}.cat.wide p,.cat.wide .meta{color:#ffffffd0}
+.cat.wide::before{background:#fff}
+.hd{display:flex;align-items:center;gap:12px;margin:8px 0 22px}
+.bar{flex:1;height:10px;border-radius:9px;background:var(--bd);overflow:hidden}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a),var(--b));border-radius:9px;transition:width .45s cubic-bezier(.3,1.4,.5,1)}
+.qc{border:1px solid var(--bd);background:var(--card);backdrop-filter:blur(16px);border-radius:32px;padding:clamp(20px,4vw,38px);animation:pop .4s cubic-bezier(.3,1.4,.5,1)}
+@keyframes pop{from{opacity:0;transform:scale(.96) translateY(10px)}}
+.tag{display:inline-block;background:var(--k,var(--a));color:#fff;font-weight:700;font-size:12px;border-radius:99px;padding:3px 12px}
+.q{font-size:clamp(20px,3.6vw,28px);line-height:1.6;font-weight:900;margin:16px 0}
+.fig{background:var(--bg);border:1px solid var(--bd);border-radius:20px;padding:10px;margin:8px 0 14px;max-width:430px}.fig svg{width:100%;height:auto;display:block}
+.dot{fill:var(--b)}.dt{fill:#fff;font-weight:900;font-size:12px;font-family:inherit}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+input{flex:1;min-width:200px;border:2px solid var(--bd);background:var(--bg);color:var(--fg);border-radius:18px;padding:15px 18px;font:inherit;font-size:18px;font-weight:700}
+.btn{border:0;border-radius:18px;padding:15px 26px;font:inherit;font-weight:900;font-size:16px;cursor:pointer;color:#fff;background:linear-gradient(100deg,var(--a),var(--b));box-shadow:0 10px 24px -12px var(--a)}
+.btn.g{background:var(--card);color:var(--fg);border:1px solid var(--bd);box-shadow:none}
+.fb{margin-top:18px;border-radius:20px;padding:16px 18px;font-weight:700;line-height:1.7;animation:pop .3s}
+.fb.ok{background:color-mix(in srgb,var(--ok) 18%,transparent);border:2px solid var(--ok)}.fb.ng{background:color-mix(in srgb,var(--ng) 16%,transparent);border:2px solid var(--ng)}
+.fb big{font-size:22px;display:block}
+.res{text-align:center}.ring{width:200px;height:200px;margin:10px auto;position:relative}.ring svg{transform:rotate(-90deg)}.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:"Dela Gothic One",sans-serif;font-weight:400;font-size:54px}
+.rv{text-align:left;margin:20px 0;display:grid;gap:8px}.rv div{background:var(--bg);border:1px solid var(--bd);border-radius:14px;padding:10px 14px;font-size:14px;line-height:1.6}.rv span{color:var(--ng);font-weight:900}
+.ft{margin-top:40px;color:var(--mut);font-size:12px;text-align:center}
+.hdr{display:flex;align-items:center;gap:10px;padding:10px 14px 10px 20px;border:1px solid var(--bd);background:var(--card);backdrop-filter:blur(18px);border-radius:26px;position:sticky;top:calc(8px + env(safe-area-inset-top,0px));z-index:5;box-shadow:0 12px 30px -20px var(--a)}
+.logo{font-weight:900;font-size:21px;cursor:pointer;letter-spacing:.02em}.logo em{font-style:italic;background:linear-gradient(100deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:3px}.logo b{font-size:11px;margin-left:6px;background:var(--fg);color:var(--bg);border-radius:99px;padding:2px 8px;vertical-align:middle}
+.pc{margin-left:auto;font-weight:900;font-size:12px;color:var(--a);background:color-mix(in srgb,var(--a) 12%,transparent);border-radius:99px;padding:6px 12px;white-space:nowrap}
+.hdr .ib{padding:8px 11px}
+.tabs{display:flex;gap:8px;overflow-x:auto;margin:20px 0 16px;padding-bottom:4px}
+.tab{border:1px solid var(--bd);background:var(--card);color:var(--fg);font:inherit;font-weight:900;border-radius:99px;padding:10px 20px;cursor:pointer;white-space:nowrap;transition:transform .2s}.tab:hover{transform:translateY(-2px)}.tab.on{background:linear-gradient(100deg,var(--a),var(--b));color:#fff;border-color:transparent;box-shadow:0 10px 22px -12px var(--a)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.st{border:1px solid var(--bd);background:var(--card);backdrop-filter:blur(14px);border-radius:22px;padding:16px 8px;text-align:center;font-size:12px;font-weight:700;color:var(--mut)}.st b{display:block;font-family:"Dela Gothic One",sans-serif;font-weight:400;font-size:clamp(28px,7vw,42px);line-height:1.2;background:linear-gradient(100deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sr{display:flex;align-items:center;gap:12px;margin:14px 0;font-weight:700;font-size:14px}.sr>span{flex:0 0 9.5em}
+.cat::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.28) 50%,transparent 60%) -150% 0/250% 100% no-repeat;transition:background-position .7s}.cat:hover::after{background-position:150% 0}
+.cat .ic{display:inline-grid;place-items:center;width:56px;height:56px;border-radius:18px;background:color-mix(in srgb,var(--k) 18%,transparent);font-size:30px}
+@media (max-width:520px){.sr>span{flex-basis:7em}.pc{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="orbs"><i></i><i></i><i></i></div>
+<main>
+<header class="hdr"><div class="logo">たちこく<em>ナビ</em><b>neo</b></div><span class="pc" id="pc">習熟 0%</span><button class="ib" id="th" aria-label="表示モードを切り替える">🌓</button><button class="ib" id="inf" aria-label="当サイトについて">ℹ️</button></header>
+<div id="app"></div>
+<div class="ft">@tachikoku-navi neo 2026- All right reserved.<br>生物基礎 期末考査対策</div>
+</main>
+<script>
+const C=[
+{id:"all",n:"総合ランダム",i:"🎲",d:"全分野からシャッフルして10問。本番前の腕試しに。",c:"#5b3df5"},
+{id:"n",n:"神経と興奮",i:"⚡",d:"静止電位・活動電位・伝導と伝達・速度計算",c:"#5b3df5"},
+{id:"k",n:"腎臓",i:"🫘",d:"ネフロンの構造・再吸収・イヌリンの計算",c:"#ff4f9a"},
+{id:"h",n:"ホルモンと血糖量",i:"🧪",d:"インスリン・グルカゴン・標的細胞",c:"#f08a00"},
+{id:"l",n:"肝臓と膵臓",i:"🍖",d:"肝小葉・胆汁・血液凝固・消化酵素",c:"#00a7b3"},
+{id:"a",n:"自律神経",i:"🫀",d:"交感神経と副交感神経のはたらき",c:"#2f7bff"}];
+// [分野, 問題, 正解(/区切りで別解), 図]
+const Q=[
+["n","静止状態で、細胞膜の外側に多いイオンは何か。","ナトリウムイオン/Na+/ナトリウム"],
+["n","静止状態で、細胞膜の内側に多いイオンは何か。","カリウムイオン/K+/カリウム"],
+["n","常にカリウムイオンが漏れ出している膜タンパク質を何チャネルというか。","カリウムリークチャネル/カリウム漏洩チャネル/カリウム漏出チャネル"],
+["n","ATPのエネルギーでNa+を3個外へ、K+を2個内へ運ぶ膜タンパク質は何か。","ナトリウムカリウムポンプ/ナトリウム・カリウムポンプ"],
+["n","濃度勾配に逆らい、ATPを使って物質を輸送する方式を何というか。","能動輸送"],
+["n","水分子が細胞膜を通るときの水チャネルを何というか。","アクアポリン"],
+["n","フグ毒の主成分で、ナトリウムチャネルをふさぐ物質は何か。","テトロドトキシン"],
+["n","髄鞘の切れ目の部分を何というか。","ランビエ絞輪/ランヴィエ絞輪"],
+["n","興奮がランビエ絞輪から次の絞輪へ飛び飛びに伝わる現象を何というか。","跳躍伝導"],
+["n","シナプス前細胞の末端に興奮が届くと開き、Ca2+を流入させるチャネルは何か。","電位依存性カルシウムチャネル"],
+["n","シナプス前細胞とシナプス後細胞の間のすき間を何というか。","シナプス間隙"],
+["n","1本の軸索内を興奮が伝わることを何というか。","伝導"],
+["n","シナプスで神経伝達物質により興奮が伝わることを何というか。","伝達"],
+["n","軸索上の2点の距離差が20cm、反応時間の差が2.0msのとき、伝導速度は何m/sか。","100"],
+["n","運動神経のA点(6cm)で1.9ms、B点(15cm)で3.4ms。伝導速度は何m/sか。","60"],
+["n","活動電位のグラフで、図の①の名称を答えよ。","静止電位","ap"],
+["n","活動電位のグラフで、図の②の名称を答えよ。(Na+が流入して電位が上昇する過程)","脱分極","ap"],
+["n","活動電位のグラフで、図の③の名称を答えよ。(K+が流出して電位が下がる過程)","再分極","ap"],
+["n","活動電位のグラフで、図の④の名称を答えよ。(静止電位よりさらにマイナスになる現象)","過分極","ap"],
+["n","活動電位のグラフで、図の⑤の点線の名称を答えよ。(これに達すると活動電位が発生)","閾値/しきい値","ap"],
+["k","糸球体を包む袋状の構造を何というか。","ボウマン嚢/ボーマン嚢/ボウマンのう/ボーマンのう"],
+["k","血液がろ過される毛細血管のかたまりを何というか。","糸球体"],
+["k","糸球体とボーマン嚢を合わせた構造を何というか。","腎小体/マルピーギ小体"],
+["k","腎小体と尿細管を合わせた構造単位を何というか。","ネフロン"],
+["k","糸球体でろ過されてボーマン嚢にこし出された液体を何というか。","原尿"],
+["k","糸球体に入る血管を何というか。","輸入細動脈"],
+["k","糸球体から出る血管を何というか。","輸出細動脈"],
+["k","全く再吸収されず、濃縮率を調べるのに使われる糖は何か。","イヌリン"],
+["k","尿細管で100%再吸収され、血糖値が高いと尿中に出る物質は何か。","グルコース"],
+["k","脳下垂体後葉から分泌され、尿量を調節するホルモンは何か。","バソプレシン/抗利尿ホルモン/ADH"],
+["k","腎臓で産生され、血圧を上昇させる物質は何か。","レニン"],
+["k","腎臓の表層部を何というか。","皮質"],
+["k","尿管の起始部で、広がった部分を何というか。","腎う/腎盂"],
+["k","糸球体の毛細血管の外側にあり、血圧に負けない形を維持する細胞は何か。","足細胞/たこ足細胞"],
+["k","糸球体の毛細血管を内側から支え束ねる細胞は何か。","メサンギウム細胞/メサンギウム"],
+["k","イヌリン濃度が血しょう1mg/mL、尿120mg/mL、尿量1mL/分のとき、原尿は何mL/分できるか。","120"],
+["k","原尿120mL/分、尿1mL/分のとき、水の再吸収率は何%か。(小数第1位まで)","99.2"],
+["k","血しょう0.1mg/mL、尿12mg/mL、1日の尿量1.5Lのとき、1分間の平均原尿量は何mLか。(整数)","125"],
+["k","海水500mL(Na+10.4mg/mL)を飲み、尿中Na+が6.9mg/mLなら、余分に失う水は何mLか。(小数第1位まで)","253.6"],
+["k","ネフロンの模式図で、図の①の名称を答えよ。","糸球体","nep"],
+["k","ネフロンの模式図で、図の②の名称を答えよ。","ボウマン嚢/ボーマン嚢/ボウマンのう/ボーマンのう","nep"],
+["k","ネフロンの模式図で、図の③の名称を答えよ。(U字に折り返す部分)","ヘンレのループ/ヘンレループ","nep"],
+["k","ネフロンの模式図で、図の④の名称を答えよ。","集合管","nep"],
+["h","血糖量調節の中枢は、間脳のどこにあるか。","視床下部"],
+["h","血糖量を下げるただ一つのホルモンは何か。","インスリン"],
+["h","血糖量を上げる、すい臓のA細胞から出るホルモンは何か。","グルカゴン"],
+["h","インスリンを分泌するランゲルハンス島の細胞は何細胞か。(アルファベット1字)","B/b/β"],
+["h","副腎髄質から分泌され、血糖量を上げるホルモンは何か。","アドレナリン"],
+["h","副腎皮質から分泌され、血糖量を上げるホルモンは何か。","糖質コルチコイド"],
+["h","甲状腺から分泌され、血糖量を上げるホルモンは何か。","チロキシン"],
+["h","肝臓や筋肉にグルコースが貯蔵されるときの多糖類は何か。","グリコーゲン"],
+["h","ヒトの血糖値の正常値は、血液100mLあたり何mgか。","100"],
+["h","インスリンの作用低下で高血糖が続く病気は何か。","糖尿病"],
+["h","ホルモンが作用する、受容体をもつ細胞を何というか。","標的細胞"],
+["h","水溶性ホルモンの受容体は、細胞のどこにあるか。","細胞膜"],
+["h","ステロイドホルモンの受容体は、細胞のどこにあるか。","核"],
+["h","水溶性ホルモンの作用で細胞内につくられるセカンドメッセンジャーは何か。","環状AMP/cAMP/サイクリックAMP"],
+["h","導管をもたず、分泌物を血液中に放出する腺を何というか。","内分泌腺"],
+["l","小腸で吸収した栄養素を肝臓に運ぶ静脈を何というか。","門脈/肝門脈"],
+["l","肝臓の組織の最小単位を何というか。","肝小葉"],
+["l","肝小葉で、肝細胞索の間を迷路のように走る毛細血管を何というか。","洞様毛細血管/類洞"],
+["l","類洞の内面にいるマクロファージを何というか。","クッパー星細胞/クッパー細胞"],
+["l","胆汁に含まれる黄褐色の色素は何か。","ビリルビン"],
+["l","胆汁を貯蔵する器官は何か。","胆嚢/胆のう"],
+["l","アルコールが分解されてできる、二日酔いの原因物質は何か。","アセトアルデヒド"],
+["l","有害なアンモニアを尿素に変える肝臓の反応系を何というか。","オルニチン回路/尿素回路"],
+["l","血液凝固で、プロトロンビンが変化してできる酵素は何か。","トロンビン"],
+["l","血液凝固で、フィブリノーゲンが変化してできる繊維状タンパク質は何か。","フィブリン"],
+["l","プロトロンビンのトロンビンへの変化に必要なイオンは何か。","カルシウムイオン/カルシウム/Ca2+"],
+["l","血液凝固を防ぐために加える物質を、1つ答えよ。(「へ」で始まる)","ヘパリン"],
+["l","すい液に含まれる、デンプンを分解する消化酵素は何か。","アミラーゼ"],
+["l","すい液に含まれる、タンパク質を分解する消化酵素を1つ答えよ。(「ト」で始まる)","トリプシン"],
+["l","すい液に含まれる、脂肪を分解する消化酵素は何か。","リパーゼ"],
+["a","緊張・活動時に優位にはたらく自律神経は何か。","交感神経"],
+["a","休息・リラックス時に優位にはたらく自律神経は何か。","副交感神経"],
+["a","自律神経の中枢は、間脳のどこにあるか。","視床下部"],
+["a","交感神経と副交感神経のように、反対にはたらく作用を何というか。","拮抗/拮抗的/拮抗作用"],
+["a","副交感神経がはたらくと、心拍数は増加か減少か。","減少"],
+["a","交感神経がはたらくと、瞳孔はどうなるか。(2文字)","散大/散瞳"],
+["a","脳神経は何対あるか。","12"],
+["a","迷走神経は第何番の脳神経か。(数字で)","10/X"],
+["n","Na+チャネルがいったん開いたあと、しばらく興奮しにくくなる時期を何というか。","不応期"],
+["n","神経伝達物質を含み、シナプス前細胞の末端にある小胞は何か。","シナプス小胞"],
+["n","神経伝達物質が結合する、シナプス後膜のタンパク質は何か。","受容体"],
+["n","シナプスでの興奮の伝達は、一方向か双方向か。","一方向"],
+["n","軸索内での興奮の伝導は、一方向か双方向に進めるか。","双方向"],
+["n","髄鞘をもつ神経線維を何というか。","有髄神経/有髄神経繊維/有髄神経線維"],
+["n","髄鞘をもたない神経線維を何というか。","無髄神経/無髄神経繊維/無髄神経線維"],
+["n","無髄神経どうしで、伝導速度が速いのは太い方か細い方か。","太い/太い方"],
+["n","受動輸送でイオンが通る、膜タンパク質の通路を何というか。","チャネル"],
+["n","シナプスでの伝達に要する時間は約何msか。","0.5"],
+["n","A点(6cm)で1.9ms、B点(15cm)で3.4msのとき、神経筋接合部での伝達に要する時間は何msか。","0.9"],
+["n","軸索上の2点の距離差が12cm、時間差が1.0msのとき、伝導速度は何m/sか。","120"],
+["n","A点(8cm)で2.0ms、B点(20cm)で3.2msのとき、伝導速度は何m/sか。","100"],
+["n","A点(8cm)で2.0ms、B点(20cm)で3.2msのとき、伝達に要する時間は何msか。","1.2"],
+["k","尿細管から再吸収された物質を受け取る毛細血管を何というか。","尿細管周囲毛細血管"],
+["k","腎臓でつくられた尿を膀胱へ導く管を何というか。","尿管"],
+["k","尿を一時的にためる器官は何か。","膀胱"],
+["k","腎臓の上にある内分泌器官は何か。","副腎"],
+["k","髄質にある三角形の部分を何というか。","錐体/腎錐体"],
+["k","錐体の最も内側の先端を何というか。","腎乳頭"],
+["k","錐体の乳頭が開く、腎うの一部を何というか。","腎杯"],
+["k","健康な成人で、1日に糸球体でろ過されるグルコースは約何gか。","180"],
+["k","近位尿細管でグルコースの約90%を再吸収する輸送体は何か。","SGLT2"],
+["k","血しょう0.1mg/mL、尿12mg/mLのとき、イヌリンの濃縮率は何倍か。","120"],
+["k","原尿120mL/分、尿1mL/分のとき、再吸収される水は何mL/分か。","119"],
+["k","尿酸が血しょう40mg/L、尿540mg/Lのとき、濃縮率は何倍か。","13.5"],
+["k","Ca2+が血しょう100mg/L、尿140mg/Lのとき、濃縮率は何倍か。","1.4"],
+["k","Na+が原尿・尿とも3400mg/L、原尿120mL/分、尿1mL/分のとき、Na+の再吸収量は何mg/分か。","404.6"],
+["k","イヌリン濃度が血しょう0.5mg/mL、尿60mg/mL、尿量2mL/分のとき、原尿量は何mL/分か。","240"],
+["h","インスリンがはたらくと、血糖値は上がるか下がるか。","下がる/低下"],
+["h","グルカゴンを分泌するランゲルハンス島の細胞は何細胞か。(アルファベット1字)","A/a/α"],
+["h","すい臓の中で、ホルモンを分泌する細胞の集まりを何というか。","ランゲルハンス島"],
+["h","内分泌腺から出たホルモンは、何によって全身に運ばれるか。","血液/血流"],
+["h","脳下垂体後葉から出て、分娩時の子宮収縮を促すホルモンは何か。","オキシトシン"],
+["h","成長ホルモンを分泌する器官はどこか。","脳下垂体前葉/脳下垂体"],
+["h","ステロイドホルモンの原料は何か。","コレステロール"],
+["h","ペプチドホルモンの原料は何か。","アミノ酸"],
+["h","インスリンは水溶性か脂溶性か。","水溶性"],
+["h","ステロイドホルモンは水溶性か脂溶性か。","脂溶性"],
+["h","神経による調節とくらべ、作用が持続的なのは神経かホルモンか。","ホルモン"],
+["h","導管をもち、分泌物を体外や消化管内に出す腺を何というか。","外分泌腺"],
+["l","成人の肝臓の重さは約何gか。","1400"],
+["l","肝臓には毎分約何Lの血液が流れ込むか。","1.5"],
+["l","肝小葉の中央を通り、血液を集める静脈を何というか。","中心静脈"],
+["l","肝臓から出て下大静脈に注ぐ静脈を何というか。","肝静脈"],
+["l","肝臓に酸素を多く含む血液を送る動脈を何というか。","肝動脈"],
+["l","肝細胞が1層に並んだ、板状の壁を何というか。","肝細胞索"],
+["l","肝臓でつくられた胆汁を運ぶ管を何というか。","胆管"],
+["l","アセトアルデヒドを分解する、肝臓の酵素の略称は何か。","ALDH2"],
+["l","血液凝固で、凝固した血球とフィブリンのかたまりを何というか。","血ぺい/血餅"],
+["l","フィブリンのもとになる血しょうタンパク質は何か。","フィブリノーゲン"],
+["l","トロンビンのもとになる物質は何か。","プロトロンビン"],
+["l","すい液をつくる細胞を何というか。","腺房細胞"],
+["l","すい液を十二指腸へ運ぶ管を何というか。","膵管/主膵管/すい管"],
+["l","胆管とすい管が十二指腸に開く部分を何というか。","十二指腸乳頭/ファーター乳頭"],
+["a","末梢神経を解剖学的に分けると、脳神経と何か。","脊髄神経"],
+["a","末梢神経を機能で分けると、体性神経と何か。","自律神経"],
+["a","体性神経は感覚神経と何か。","運動神経"],
+["a","交感神経がはたらくと、心拍数は増加か減少か。","増加"],
+["a","副交感神経がはたらくと、瞳孔は拡大か縮小か。","縮小/縮瞳"],
+["a","交感神経がはたらくと、胃腸の活動は促進か抑制か。","抑制"],
+["a","副交感神経がはたらくと、消化管の活動は促進か抑制か。","促進"],
+["a","汗腺を支配するのは、交感神経か副交感神経か。","交感神経"],
+["a","副交感神経がはたらくと、気管支は収縮か弛緩か。","収縮"],
+["a","多くの臓器に分布する、第10脳神経の名称は何か。","迷走神経"],
+["a","瞳孔を縮める副交感線維を含む、第3脳神経の名称は何か。","動眼神経"],
+["a","第2脳神経の名称は何か。","視神経"],
+["a","第8脳神経の名称は何か。","内耳神経"],
+["n", "細胞膜が物質を選んで通す性質を何というか。", "選択的透過性/選択透過性"],
+["n", "疎水性の分子が通ることができる、細胞膜の構造を何というか。", "脂質二重層"],
+["n", "濃度勾配に従い、ATPを使わずに物質が移動する輸送を何というか。", "受動輸送"],
+["n", "活動電位のとき、細胞内へ流入するイオンは何か。", "ナトリウムイオン/Na+/ナトリウム"],
+["n", "脱分極のあと、細胞外へ流出して膜電位を下げるイオンは何か。", "カリウムイオン/K+/カリウム"],
+["n", "細胞膜の内側と外側の電位差を何というか。", "膜電位"],
+["n", "同じ太さの無髄神経と有髄神経で、伝導速度が速いのはどちらか。", "有髄神経/有髄"],
+["n", "神経伝達物質が結合する受容体をもつ、次の細胞側の膜を何というか。", "シナプス後膜"],
+["k", "糸球体で、血圧によって血液から原尿をつくる過程を何というか。", "ろ過"],
+["k", "原尿から水やグルコースなどが血液にもどる過程を何というか。", "再吸収"],
+["k", "尿細管でのNa+の再吸収のように、ATPを使う輸送を何というか。", "能動輸送"],
+["k", "ろ過された一部が再吸収され、血液の浸透圧の維持に関与する成分は何か。", "尿素"],
+["k", "血しょう中に多く、糸球体でろ過されない成分は何か。", "タンパク質"],
+["k", "抗利尿ホルモンを分泌する器官は何か。", "脳下垂体後葉"],
+["k", "体内の水分が不足すると、バソプレシンの分泌量は増えるか減るか。", "増える/増加"],
+["k", "ヘンレのループにつながる、集合管の手前の尿細管を何というか。", "遠位尿細管"],
+["h", "血糖値が高い状態が続くことを何というか。", "高血糖"],
+["h", "血糖値が低い状態を何というか。", "低血糖"],
+["h", "グルカゴンは肝臓の何を促進して血糖値を上げるか。", "グリコーゲンの分解/グリコーゲン分解"],
+["h", "インスリンが筋肉や脂肪組織への取り込みを促す物質は何か。", "グルコース"],
+["h", "余分なグルコースは、脂肪組織で何に変換されるか。", "トリグリセライド/中性脂肪"],
+["h", "副腎の内側の部分を何というか。", "副腎髄質/髄質"],
+["h", "副腎の外側の部分を何というか。", "副腎皮質/皮質"],
+["h", "情報伝達が速いのは、神経とホルモンのどちらか。", "神経"],
+["h", "環状AMPのように、細胞内で情報を伝える物質を何というか。", "セカンドメッセンジャー"],
+["h", "内分泌器官でもあり外分泌器官でもある器官は何か。", "すい臓/膵臓"],
+["h", "血糖値の正常値を濃度で表すと何%か。", "0.1"],
+["h", "インスリンの分泌を促す自律神経は、交感神経と副交感神経のどちらか。", "副交感神経"],
+["l", "肝臓は腹部の左右どちら寄りにあるか。", "右"],
+["l", "肝臓は体重の約何分の1か。(数字のみ)", "50"],
+["l", "肝臓に流れ込む血液の約何割が門脈からか。(数字のみ)", "8"],
+["l", "肝小葉は何角形のかたまりか。", "六角形/六角"],
+["l", "1つの肝小葉をつくる肝細胞は約何個か。", "50万/500000"],
+["l", "胆汁はコレステロールと何からつくられるか。", "胆汁酸"],
+["l", "胆汁は、脂質の何を助けるはたらきがあるか。", "消化吸収/消化と吸収"],
+["l", "胆汁が胆管を通って出ていく先はどこか。", "十二指腸"],
+["l", "血漿のカルシウムを除いて凝固を防ぐ、ナトリウムの塩は何か。", "クエン酸ナトリウム"],
+["l", "すい臓の腺房細胞でつくられる消化液を何というか。", "すい液/膵液"],
+["l", "ALDH2の活性が弱いと、お酒に強い体質か弱い体質か。", "弱い/弱い体質"],
+["l", "遺伝的にオルニチン回路に異常があると、新生児に起こる症状は何か。", "高アンモニア血症"],
+["a", "交感神経は、アクセルとブレーキのどちらにたとえられるか。", "アクセル"],
+["a", "副交感神経は、アクセルとブレーキのどちらにたとえられるか。", "ブレーキ"],
+["a", "交感神経がはたらくと、血管は収縮か拡張か。", "収縮"],
+["a", "交感神経がはたらくと、立毛筋は収縮か弛緩か。", "収縮"],
+["a", "副交感神経がはたらくと、心拍数は増加か減少か。", "減少"],
+["a", "副交感神経がはたらくと、膀胱は収縮か弛緩か。", "収縮"],
+["a", "交感神経がはたらくと、膀胱は収縮か弛緩か。", "弛緩"],
+["a", "交感神経がはたらくと、気管支は収縮か弛緩か。", "弛緩"],
+["a", "交感神経がはたらくと、唾液はサラサラかネバネバか。", "ネバネバ"],
+["a", "副交感神経がはたらくと、唾液はサラサラかネバネバか。", "サラサラ"],
+["a", "交感神経がはたらくと、血圧は上がるか下がるか。", "上がる/上昇"],
+["a", "脳神経は、中枢神経と末梢神経のどちらか。", "末梢神経"]
+];
+const CAP={ap:"図：神経細胞の活動電位のグラフ（縦軸＝膜電位、横軸＝時間、点線＝閾値）",nep:"図：ネフロン（腎小体＋尿細管）の模式図"};
+const FIG={
+nep:`<svg viewBox="0 0 260 215" role="img" aria-label="ネフロンの模式図"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="70" cy="50" r="31" stroke="#f08a00" stroke-width="5" fill="rgba(240,138,0,.12)"/><path d="M58 52c4-12 20-14 24-2s-14 16-10 4 18 2 10 12" stroke="#e23d4b" stroke-width="4"/><path d="M70 81C70 100 50 105 60 122S95 128 95 148V178Q115 208 135 178V110C135 80 205 80 205 110" stroke="#f08a00" stroke-width="9" opacity=".75"/><path d="M205 28V200" stroke="#f08a00" stroke-width="14" opacity=".5"/></g><g><circle class="dot" cx="70" cy="50" r="9"/><text class="dt" x="70" y="54" text-anchor="middle">①</text><circle class="dot" cx="42" cy="26" r="9"/><text class="dt" x="42" y="30" text-anchor="middle">②</text><circle class="dot" cx="115" cy="197" r="9"/><text class="dt" x="115" y="201" text-anchor="middle">③</text><circle class="dot" cx="205" cy="150" r="9"/><text class="dt" x="205" y="154" text-anchor="middle">④</text></g></svg>`,
+ap:`<svg viewBox="0 0 300 175" role="img" aria-label="活動電位のグラフ"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 95H290" stroke="var(--mut)" stroke-width="1.5" stroke-dasharray="5 5"/><path d="M10 110H50C58 110 62 102 70 95L95 22L125 100C132 130 145 138 165 130C182 122 190 110 210 110H290" stroke="var(--a)" stroke-width="4"/></g><g><circle class="dot" cx="30" cy="128" r="9"/><text class="dt" x="30" y="132" text-anchor="middle">①</text><circle class="dot" cx="76" cy="52" r="9"/><text class="dt" x="76" y="56" text-anchor="middle">②</text><circle class="dot" cx="118" cy="52" r="9"/><text class="dt" x="118" y="56" text-anchor="middle">③</text><circle class="dot" cx="150" cy="156" r="9"/><text class="dt" x="150" y="160" text-anchor="middle">④</text><circle class="dot" cx="262" cy="75" r="9"/><text class="dt" x="262" y="79" text-anchor="middle">⑤</text></g></svg>`};
+const $=s=>document.querySelector(s),app=$("#app");
+const norm=s=>s.normalize("NFKC").toLowerCase().replace(/[\s・･.。、,]/g,"").replace(/[−–—‐]/g,"-");
+const ok=(inp,ans)=>{const x=norm(inp);if(!x)return false;return ans.split("/").some(a=>{const n=norm(a);if(/^-?[\d.]+$/.test(n)){const v=parseFloat(x.replace(/[^\d.\-]/g,""));return v===parseFloat(n)}return x===n})};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+let best={};try{best=JSON.parse(localStorage.getItem("tn-best")||"{}")}catch(e){}
+const saveBest=(id,s)=>{if(s>(best[id]||0)){best[id]=s;try{localStorage.setItem("tn-best",JSON.stringify(best))}catch(e){}}};
+const cnt=id=>id==="all"?Q.length:Q.filter(q=>q[0]===id).length;
+const cat=id=>C.find(c=>c.id===id);
+let tab="q";
+const full=()=>Object.values(best).filter(v=>v===10).length,pct=()=>Math.round(C.reduce((s,c)=>s+(best[c.id]||0),0)/(C.length*10)*100);
+const head=()=>`<div class="tabs">${[["q","📚 問題"],["s","📊 成績"]].map(t=>`<button class="tab ${tab===t[0]?"on":""}" data-t="${t[0]}">${t[1]}</button>`).join("")}</div><div class="stats"><div class="st"><b>${Q.length}</b>収録問題</div><div class="st"><b>${Object.keys(best).length}</b>挑戦した分野</div><div class="st"><b>${full()}</b>満点の分野</div></div>`;
+const bindTabs=()=>{app.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{tab=b.dataset.t;home()});$("#pc").textContent="習熟 "+pct()+"%"};
+function stats(){app.innerHTML=head()+`<div class="qc">${C.map(c=>`<div class="sr"><span>${c.i} ${c.n}</span><div class="bar"><i style="width:${(best[c.id]||0)*10}%"></i></div><b>${best[c.id]||0}/10</b></div>`).join("")}</div>`;bindTabs();}
+function home(){
+if(tab==="s")return stats();
+app.innerHTML=head()+`<div class="grid">${C.map(c=>`<button class="cat ${c.id==="all"?"wide":""}" style="--k:${c.c}" data-id="${c.id}"><div class="ic">${c.i}</div><h3>${c.n}</h3><p>${c.d}</p><div class="meta"><span>全${cnt(c.id)}問から10問</span><span>${best[c.id]!=null?"最高 "+best[c.id]+"/10":"未挑戦"}</span></div></button>`).join("")}</div>`;
+app.querySelectorAll(".cat").forEach(b=>b.onclick=()=>start(b.dataset.id));bindTabs();}
+let S;
+function start(id){const pool=id==="all"?Q:Q.filter(q=>q[0]===id);S={id,qs:shuffle(pool).slice(0,10),i:0,sc:0,wr:[],done:false};ask();}
+function ask(){
+const q=S.qs[S.i],c=cat(q[0]);S.done=false;
+app.innerHTML=`<div class="hd"><button class="ib" id="bk">戻る</button><div class="bar"><i style="width:${S.i/S.qs.length*100}%"></i></div><b>${S.i+1}/${S.qs.length}</b></div>
+<div class="qc" style="--k:${c.c}"><span class="tag">${c.i} ${c.n}</span><div class="q">${q[1]}</div>${q[3]?`<div class="fig">${FIG[q[3]]}<div style="font-size:12px;color:var(--mut);font-weight:700;margin-top:6px">${CAP[q[3]]}</div></div>`:""}
+<div class="row"><input id="in" autocomplete="off" autocapitalize="off" placeholder="答えを入力" aria-label="答え"><button class="btn" id="go">答える</button><button class="btn g" id="sk">わからない</button></div><div id="fb" aria-live="polite"></div></div>`;
+$("#bk").onclick=home;$("#in").focus();
+const judge=skip=>{if(S.done)return;const v=$("#in").value;if(!skip&&!v.trim())return;S.done=true;const good=!skip&&ok(v,q[2]),a=q[2].split("/")[0];
+if(good)S.sc++;else S.wr.push([q[1],a]);
+$("#fb").innerHTML=`<div class="fb ${good?"ok":"ng"}"><big>${good?"正解！":"残念…"}</big>${good?"答え：":"正しい答え："}${a}</div><div class="row" style="margin-top:14px"><button class="btn" id="nx">${S.i+1<S.qs.length?"次の問題へ":"結果を見る"}</button></div>`;
+$("#in").disabled=true;$("#go").hidden=$("#sk").hidden=true;$("#nx").focus();$("#nx").onclick=next;};
+$("#go").onclick=()=>judge(false);$("#sk").onclick=()=>judge(true);
+$("#in").onkeydown=e=>{if(e.key==="Enter"&&!e.isComposing)judge(false)};}
+function next(){S.i++;S.i<S.qs.length?ask():result();}
+function result(){
+saveBest(S.id,S.sc);const p=S.sc/S.qs.length,R=84,L=2*Math.PI*R;
+const msg=p===1?"パーフェクト！この分野は仕上がっています。":p>=.7?"いい調子。間違えた問題だけ見直そう。":p>=.4?"あと少し。もう一周すると定着します。":"ここからが伸びしろ。答えを確認してもう一度。";
+app.innerHTML=`<div class="qc res"><h2 style="margin:0">${cat(S.id).n}の結果</h2><div class="ring"><svg width="200" height="200"><circle cx="100" cy="100" r="${R}" fill="none" stroke="var(--bd)" stroke-width="16"/><circle id="rg" cx="100" cy="100" r="${R}" fill="none" stroke="url(#g)" stroke-width="16" stroke-linecap="round" stroke-dasharray="${L}" stroke-dashoffset="${L}" style="transition:stroke-dashoffset 1s cubic-bezier(.3,1,.4,1)"/><defs><linearGradient id="g"><stop offset="0" stop-color="#5b3df5"/><stop offset="1" stop-color="#ff4f9a"/></linearGradient></defs></svg><b>${S.sc}/${S.qs.length}</b></div><p>${msg}</p>
+${S.wr.length?`<div class="rv">${S.wr.map(w=>`<div>${w[0]}<br><span>答え：${w[1]}</span></div>`).join("")}</div>`:""}
+<div class="row" style="justify-content:center"><button class="btn" id="re">もう一度（問題が入れ替わります）</button><button class="btn g" id="hm">ホームへ</button></div></div>`;
+requestAnimationFrame(()=>requestAnimationFrame(()=>{$("#rg").style.strokeDashoffset=L*(1-p)}));
+$("#re").onclick=()=>start(S.id);$("#hm").onclick=home;}
+$("#th").onclick=()=>{const r=document.documentElement,d=getComputedStyle(r).getPropertyValue("--bg").trim()==="#0d0b24";r.dataset.theme=d?"light":"dark"};
+$(".logo").onclick=()=>{tab="q";home()};
+$("#inf").onclick=()=>{app.innerHTML=`<div class="qc"><h2 style="margin-top:0">ℹ️ 当サイトについて</h2><p style="line-height:1.9">生物基礎の授業プリントをもとにした、期末考査対策の一問一答サイトです。分野ごとにランダムで10問ずつ出題されます。成績はこの端末にだけ保存されます。</p><button class="btn" id="hm">戻る</button></div>`;$("#hm").onclick=home};
+home();
+</script>
+</body>
+</html>
